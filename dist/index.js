@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const environment_1 = require("./api/config/environments/environment");
-const server_1 = require("./api/server");
-const routes_1 = require("./api/routes");
+const environment_1 = require("@api/config/environments/environment");
+const server_1 = require("@api/server");
+const routes_1 = require("@api/routes");
 (async () => {
     main();
 })();
