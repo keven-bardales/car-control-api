@@ -68,7 +68,7 @@ model VehicleAssignedDrivers {
 
 model Driver {
   id                     String                   @id @default(uuid())
-  name                   String
+  name                   String                   @unique
   dni                    String
   birthDate              DateTime
   isDeleted              Boolean                  @default(false)
