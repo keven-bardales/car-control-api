@@ -1,15 +1,15 @@
-import express, { Request, Response, Application } from "express";
-import dotenv from "dotenv";
+import express, { Request, Response, Application } from 'express';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const ALIASTEST = "ALIASTEST";
+export const ALIASTEST = 'ALIASTEST';
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to Express & TypeScript Server");
+app.get('/', (req: Request, res: Response) => {
+  res.send('Welcome to Express & TypeScript Server');
 });
 
 app.listen(port, () => {
