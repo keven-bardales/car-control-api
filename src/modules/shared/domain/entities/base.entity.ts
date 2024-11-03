@@ -1,5 +1,3 @@
-// src/modules/shared/domain/value-objects/NumberValueObject.ts
-
 import { DateValueObject } from '@modules/shared/domain/value-objects/date.value-object';
 
 export interface BaseEntityProps<ID> {
