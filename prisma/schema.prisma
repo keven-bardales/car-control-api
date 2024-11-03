@@ -22,10 +22,12 @@ model Vehicle {
   vin                    String
   vehicelEntrances       VehiceEntrance[]
   vehicleExits           VehiceExit[]
+  driverId               String
   isDeleted              Boolean                  @default(false)
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
   vehicleAssignedDrivers VehicleAssignedDrivers[]
+  driver                 Driver                   @relation(fields: [driverId], references: [id])
 }
 
 model VehiceEntrance {
@@ -55,15 +57,16 @@ model VehiceExit {
 }
 
 model VehicleAssignedDrivers {
-  id                Int      @id @default(autoincrement())
-  isCurrentAssigned Boolean
-  vehicle           Vehicle  @relation(fields: [vehicleId], references: [id])
-  vehicleId         Int
-  driver            Driver   @relation(fields: [driverId], references: [id])
-  driverId          String
-  isDeleted         Boolean  @default(false)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id             Int       @id @default(autoincrement())
+  vehicle        Vehicle   @relation(fields: [vehicleId], references: [id])
+  vehicleId      Int
+  driver         Driver    @relation(fields: [driverId], references: [id])
+  driverId       String
+  dateAssigned   DateTime
+  dateUnassigned DateTime?
+  isDeleted      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model Driver {
@@ -75,4 +78,5 @@ model Driver {
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
   vehicleAssignedDrivers VehicleAssignedDrivers[]
+  vehicles               Vehicle[]
 }
