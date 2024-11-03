@@ -13,7 +13,8 @@
     "baseUrl": "./",                  
     "paths": {
       "@/*": ["src/*"],
-      "@modules/shared/*": ["src/modules/shared/*"],               
+      "@modules/shared/*": ["src/modules/shared/*"], 
+      "@modules/vehicles/*": ["src/modules/vehicles/*"],             
     }
   },
   "include": ["src/**/*"],           
