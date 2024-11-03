@@ -74,5 +74,5 @@ model Driver {
   isDeleted              Boolean                  @default(false)
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
-  VehicleAssignedDrivers VehicleAssignedDrivers[]
+  vehicleAssignedDrivers VehicleAssignedDrivers[]
 }
