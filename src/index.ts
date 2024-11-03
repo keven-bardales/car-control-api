@@ -1,17 +1,17 @@
-import express, { Request, Response, Application } from 'express';
-import dotenv from 'dotenv';
+import { environment } from '@api/config/environments/environment';
+import { Server } from '@api/server';
+import { AppRoutes } from '@api/routes';
 
-dotenv.config();
+(async () => {
+  main();
+})();
 
-export const ALIASTEST = 'ALIASTEST';
+function main() {
+  const server = new Server({
+    port: environment.PORT,
+    publicPath: environment.PUBLIC_PATH,
+    routes: AppRoutes.routes,
+  });
 
-const app: Application = express();
-const port = process.env.PORT || 8000;
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Welcome to Express & TypeScript Server');
-});
-
-app.listen(port, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
-});
+  server.start();
+}

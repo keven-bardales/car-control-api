@@ -1,19 +1,17 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ALIASTEST = void 0;
-const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-exports.ALIASTEST = 'ALIASTEST';
-const app = (0, express_1.default)();
-const port = process.env.PORT || 8000;
-app.get('/', (req, res) => {
-    res.send('Welcome to Express & TypeScript Server');
-});
-app.listen(port, () => {
-    console.log(`Server is Fire at http://localhost:${port}`);
-});
+const environment_1 = require("./api/config/environments/environment");
+const server_1 = require("./api/server");
+const routes_1 = require("./api/routes");
+(async () => {
+    main();
+})();
+function main() {
+    const server = new server_1.Server({
+        port: environment_1.environment.PORT,
+        publicPath: environment_1.environment.PUBLIC_PATH,
+        routes: routes_1.AppRoutes.routes,
+    });
+    server.start();
+}
 //# sourceMappingURL=index.js.map

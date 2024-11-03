@@ -12,6 +12,11 @@ import {
 import { Request, Response } from 'express';
 
 export const errorHandlingMiddleware = (error: Error, req: Request, res: Response) => {
+  console.log({
+    messageCustom: 'Error en el servidor',
+    error,
+  });
+
   if (error instanceof SyntaxError) {
     return res.status(400).json(
       ApiResponse.badRequest({

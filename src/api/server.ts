@@ -1,7 +1,8 @@
-import express, { Router } from 'express';
+import express, { NextFunction, Request, Response, Router } from 'express';
 import cors from 'cors';
 import { errorHandlingMiddleware } from '@/api/middlewares/error-handler.middleware';
 import compression from 'compression';
+import { APIVERSION } from './routes';
 
 interface Options {
   port: number;
@@ -29,15 +30,15 @@ export class Server {
     this.app.use(cors());
 
     this.app.use(express.static(this.publicPath));
-
     this.app.use(this.routes);
 
-    this.app.use((err: Error, req: express.Request, res: express.Response) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
       errorHandlingMiddleware(err, req, res);
     });
 
     this.app.listen(this.port, () => {
-      console.log(`Server is listening on  http://localhost:${this.port}/api/v1`);
+      console.log(`Server is listening on http://localhost:${this.port}${APIVERSION}`);
     });
   }
 }
