@@ -22,6 +22,7 @@ model Vehicle {
   vin                    String
   vehicelEntrances       VehiceEntrance[]
   vehicleExits           VehiceExit[]
+  imageUrl               String?
   driverId               String
   isDeleted              Boolean                  @default(false)
   createdAt              DateTime                 @default(now())

@@ -6,6 +6,8 @@ interface VehicleProps extends BaseEntityProps<number> {
   year: number;
   plate: string;
   vin: string;
+  imageUrl?: string | null;
+  driverId: string;
 }
 
 interface VehiclePrimitiveProps extends BaseEntityPrimitiveProps<number> {
@@ -14,14 +16,18 @@ interface VehiclePrimitiveProps extends BaseEntityPrimitiveProps<number> {
   year: number;
   plate: string;
   vin: string;
+  imageUrl?: string | null;
+  driverId: string;
 }
 
-export class Vehicle extends BaseEntity<number, VehicleProps, VehiclePrimitiveProps> {
+export class VehicleEntity extends BaseEntity<number, VehicleProps, VehiclePrimitiveProps> {
   public make: string;
   public model: string;
   public year: number;
   public plate: string;
   public vin: string;
+  public imageUrl?: string | null;
+  public driverId: string;
 
   constructor(props: VehicleProps) {
     super({
@@ -35,6 +41,8 @@ export class Vehicle extends BaseEntity<number, VehicleProps, VehiclePrimitivePr
     this.year = props.year;
     this.plate = props.plate;
     this.vin = props.vin;
+    this.imageUrl = props.imageUrl;
+    this.driverId = props.driverId;
   }
 
   public serialize(): VehiclePrimitiveProps {
@@ -48,6 +56,8 @@ export class Vehicle extends BaseEntity<number, VehicleProps, VehiclePrimitivePr
       isDeleted: this.isDeleted,
       createdAt: this.createdAt.getStringValue(),
       updatedAt: this.updatedAt.getStringValue(),
+      imageUrl: this.imageUrl,
+      driverId: this.driverId,
     };
   }
 }

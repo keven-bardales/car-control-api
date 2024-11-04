@@ -9,9 +9,9 @@ export class VehicleController extends BaseController {
   }
 
   protected initializeRoutes(): void {
-    this.router.get('/', this.handleAsync(this.getAllVehicles.bind(this)));
-    this.router.get('/:id', this.handleAsync(this.getVehicleById.bind(this)));
-    this.router.post('/', this.handleAsync(this.createVehicle.bind(this)));
+    this.router.get('/getAll', this.handleAsync(this.getAllVehicles.bind(this)));
+    this.router.get('/getById/:id', this.handleAsync(this.getVehicleById.bind(this)));
+    this.router.post('/create', this.handleAsync(this.createVehicle.bind(this)));
   }
 
   private async getAllVehicles(): Promise<void> {
