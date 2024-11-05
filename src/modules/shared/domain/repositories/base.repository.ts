@@ -1,7 +1,7 @@
 export interface BaseRepository<T, ID> {
   create(entity: T): Promise<T | null>;
-  findById(id: ID): Promise<T | null>;
-  findAll(): Promise<T[]>;
-  save(entity: T): Promise<T>;
+  getById(id: ID): Promise<T | null>;
+  getAll(): Promise<T[]>;
+  update(entity: T): Promise<T>;
   delete(id: ID): Promise<boolean>;
 }

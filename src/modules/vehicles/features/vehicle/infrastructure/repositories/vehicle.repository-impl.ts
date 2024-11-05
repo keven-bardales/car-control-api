@@ -42,7 +42,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
     return entity;
   }
 
-  async findById(id: number): Promise<VehicleEntity | null> {
+  async getById(id: number): Promise<VehicleEntity | null> {
     const result = await db.vehicle.findUnique({
       where: {
         id,
@@ -74,7 +74,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
     return entity;
   }
 
-  async findAll(): Promise<VehicleEntity[]> {
+  async getAll(): Promise<VehicleEntity[]> {
     const result = await db.vehicle.findMany();
 
     return result.map((item) => {
@@ -96,47 +96,6 @@ export class VehicleRepositoryImpl implements VehicleRepository {
         imageUrl: item.imageUrl,
       });
     });
-  }
-
-  async update(id: number, item: VehicleEntity): Promise<VehicleEntity | null> {
-    const result = await db.vehicle.update({
-      where: {
-        id,
-      },
-      data: {
-        make: item.make,
-        model: item.model,
-        year: item.year,
-        plate: item.plate,
-        vin: item.vin,
-        imageUrl: item.imageUrl,
-        driverId: item.driverId,
-      },
-    });
-
-    if (!result) {
-      return null;
-    }
-
-    const entity = new VehicleEntity({
-      createdAt: new DateValueObject({
-        value: result.createdAt,
-      }),
-      driverId: result.driverId,
-      id: result.id,
-      isDeleted: result.isDeleted,
-      make: result.make,
-      model: result.model,
-      plate: result.plate,
-      updatedAt: new DateValueObject({
-        value: result.updatedAt,
-      }),
-      vin: result.vin,
-      year: result.year,
-      imageUrl: result.imageUrl,
-    });
-
-    return entity;
   }
 
   async delete(id: number): Promise<boolean> {
@@ -222,7 +181,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
       });
   }
 
-  save(entity: VehicleEntity): Promise<VehicleEntity> {
+  update(entity: VehicleEntity): Promise<VehicleEntity> {
     const result = db.vehicle.update({
       data: {
         make: entity.make,
