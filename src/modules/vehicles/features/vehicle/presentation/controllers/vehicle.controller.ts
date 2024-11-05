@@ -1,7 +1,10 @@
+import { useCasesContainer } from '@/modules/shared/application/dependencies/containers/use-cases.container';
+import { UseCasesContainersEnum } from '@/modules/shared/application/dependencies/dependecies-enums/use-cases-containers.enum';
 import { ApiExceptionType } from '@/modules/shared/domain/enums/api-exception-type.enum';
 import { ApiException } from '@/modules/shared/domain/exceptions/global-exceptions';
 import { BaseController } from '@/modules/shared/presentation/controllers/base.controller';
 import { Request, Response } from 'express';
+import { CreateVehicleUseCase } from '../../domain/use-cases/create-vehicle/create-vehicle.use-case';
 
 export class VehicleController extends BaseController {
   constructor() {
@@ -30,6 +33,12 @@ export class VehicleController extends BaseController {
 
   private async createVehicle(req: Request, res: Response): Promise<void> {
     const vehicleData = req.body;
-    res.status(201).json({ message: 'Vehicle created', data: vehicleData });
+
+    const createVehicleUseCase = useCasesContainer.resolve<CreateVehicleUseCase>(
+      UseCasesContainersEnum.CreateVehicleUseCase,
+    );
+
+    const response = await createVehicleUseCase.execute(vehicleData);
+    res.status(201).json(response);
   }
 }

@@ -3,6 +3,8 @@ import cors from 'cors';
 import { errorHandlingMiddleware } from '@/api/middlewares/error-handler.middleware';
 import compression from 'compression';
 import { APIVERSION } from './routes';
+import { registerRepositories } from '@/modules/shared/application/dependencies/register-dependencies/repository.register';
+import { registerUseCases } from '@/modules/shared/application/dependencies/register-dependencies/use-cases.register';
 
 interface Options {
   port: number;
@@ -25,6 +27,8 @@ export class Server {
 
   async start() {
     this.app.use(express.json());
+    registerRepositories();
+    registerUseCases();
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(compression());
     this.app.use(cors());
@@ -34,6 +38,7 @@ export class Server {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+      console.error(err);
       errorHandlingMiddleware(err, req, res);
     });
 

@@ -23,12 +23,12 @@ model Vehicle {
   vehicelEntrances       VehiceEntrance[]
   vehicleExits           VehiceExit[]
   imageUrl               String?
-  driverId               String
+  driverId               String?
   isDeleted              Boolean                  @default(false)
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
   vehicleAssignedDrivers VehicleAssignedDrivers[]
-  driver                 Driver                   @relation(fields: [driverId], references: [id])
+  driver                 Driver?                  @relation(fields: [driverId], references: [id])
 }
 
 model VehiceEntrance {

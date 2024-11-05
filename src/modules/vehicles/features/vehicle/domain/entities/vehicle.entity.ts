@@ -7,7 +7,7 @@ interface VehicleProps extends BaseEntityProps<number> {
   plate: string;
   vin: string;
   imageUrl?: string | null;
-  driverId: string;
+  driverId: string | null;
 }
 
 interface VehiclePrimitiveProps extends BaseEntityPrimitiveProps<number> {
@@ -17,7 +17,7 @@ interface VehiclePrimitiveProps extends BaseEntityPrimitiveProps<number> {
   plate: string;
   vin: string;
   imageUrl?: string | null;
-  driverId: string;
+  driverId: string | null;
 }
 
 export class VehicleEntity extends BaseEntity<number, VehicleProps, VehiclePrimitiveProps> {
@@ -27,7 +27,7 @@ export class VehicleEntity extends BaseEntity<number, VehicleProps, VehiclePrimi
   public plate: string;
   public vin: string;
   public imageUrl?: string | null;
-  public driverId: string;
+  public driverId?: string | null;
 
   constructor(props: VehicleProps) {
     super({
@@ -57,7 +57,7 @@ export class VehicleEntity extends BaseEntity<number, VehicleProps, VehiclePrimi
       createdAt: this.createdAt.getStringValue(),
       updatedAt: this.updatedAt.getStringValue(),
       imageUrl: this.imageUrl,
-      driverId: this.driverId,
+      driverId: this.driverId ?? null,
     };
   }
 }
