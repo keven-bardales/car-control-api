@@ -38,7 +38,7 @@ export class PaginationWrapper<T> {
       this.validSortFields = otherProps.validSortFields;
     }
 
-    if (this.validSortFields.length > 0 && !this.validSortFields.includes(orderBy)) {
+    if (this.validSortFields.length > 0 && !this.validSortFields.includes(orderBy) && orderBy !== '') {
       throw new BadRequestException({
         message: `Invalid sort field ${orderBy}`,
       });
