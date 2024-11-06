@@ -2,8 +2,15 @@ import { VehicleRepository } from '@modules/vehicles/features/vehicle/domain/rep
 import { VehicleEntity } from '@modules/vehicles/features/vehicle/domain/entities/vehicle.entity';
 import { db } from '@/modules/shared/infrastructure/db/db';
 import { DateValueObject } from '@/modules/shared/domain/value-objects/date.value-object';
+import { PaginationWrapperProps } from '@/modules/shared/domain/wrappers/pagination-wrapper';
+import { Prisma } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 export class VehicleRepositoryImpl implements VehicleRepository {
+  count(): Promise<number> {
+    return db.driver.count();
+  }
+
   async create(item: VehicleEntity): Promise<VehicleEntity | null> {
     const result = await db.vehicle.create({
       data: {
@@ -74,28 +81,57 @@ export class VehicleRepositoryImpl implements VehicleRepository {
     return entity;
   }
 
-  async getAll(): Promise<VehicleEntity[]> {
-    const result = await db.vehicle.findMany();
+  async getAll(paginationOptions: PaginationWrapperProps<VehicleEntity>): Promise<VehicleEntity[]> {
+    const {
+      pageIndex = 1,
+      pageSize = 10,
+      orderBy = 'createdAt',
+      orderDirection = 'asc',
+      includeAll = false,
+      parameter: searchTerm = null,
+    } = paginationOptions;
 
-    return result.map((item) => {
-      return new VehicleEntity({
-        createdAt: new DateValueObject({
-          value: item.createdAt,
+    const query: Prisma.VehicleFindManyArgs<DefaultArgs> = {
+      orderBy: {
+        [orderBy]: orderDirection,
+      },
+    };
+
+    if (searchTerm) {
+      query.where = {
+        OR: [
+          { make: { contains: searchTerm, mode: 'insensitive' } },
+          { model: { contains: searchTerm, mode: 'insensitive' } },
+          { plate: { contains: searchTerm, mode: 'insensitive' } },
+          { vin: { contains: searchTerm, mode: 'insensitive' } },
+        ],
+      };
+    }
+
+    if (!includeAll) {
+      const skip = (pageIndex - 1) * pageSize;
+      query.skip = skip;
+      query.take = pageSize;
+    }
+
+    const result = await db.vehicle.findMany(query);
+
+    return result.map(
+      (item) =>
+        new VehicleEntity({
+          createdAt: new DateValueObject({ value: item.createdAt }),
+          driverId: item.driverId,
+          id: item.id,
+          isDeleted: item.isDeleted,
+          make: item.make,
+          model: item.model,
+          plate: item.plate,
+          updatedAt: new DateValueObject({ value: item.updatedAt }),
+          vin: item.vin,
+          year: item.year,
+          imageUrl: item.imageUrl,
         }),
-        driverId: item.driverId,
-        id: item.id,
-        isDeleted: item.isDeleted,
-        make: item.make,
-        model: item.model,
-        plate: item.plate,
-        updatedAt: new DateValueObject({
-          value: item.updatedAt,
-        }),
-        vin: item.vin,
-        year: item.year,
-        imageUrl: item.imageUrl,
-      });
-    });
+    );
   }
 
   async delete(id: number): Promise<boolean> {
@@ -115,106 +151,8 @@ export class VehicleRepositoryImpl implements VehicleRepository {
     return true;
   }
 
-  async findByVin(vin: string): Promise<VehicleEntity | null> {
-    const result = await db.vehicle.findFirst({
-      where: {
-        vin: vin,
-      },
-    });
-
-    if (!result) {
-      return null;
-    }
-
-    const entity = new VehicleEntity({
-      createdAt: new DateValueObject({
-        value: result.createdAt,
-      }),
-      driverId: result.driverId,
-      id: result.id,
-      isDeleted: result.isDeleted,
-      make: result.make,
-      model: result.model,
-      plate: result.plate,
-      updatedAt: new DateValueObject({
-        value: result.updatedAt,
-      }),
-      vin: result.vin,
-      year: result.year,
-      imageUrl: result.imageUrl,
-    });
-
-    return entity;
-  }
-
-  findByPlate(plate: string): Promise<VehicleEntity | null> {
-    return db.vehicle
-      .findFirst({
-        where: {
-          plate: plate,
-        },
-      })
-      .then((result) => {
-        if (!result) {
-          return null;
-        }
-
-        const entity = new VehicleEntity({
-          createdAt: new DateValueObject({
-            value: result.createdAt,
-          }),
-          driverId: result.driverId,
-          id: result.id,
-          isDeleted: result.isDeleted,
-          make: result.make,
-          model: result.model,
-          plate: result.plate,
-          updatedAt: new DateValueObject({
-            value: result.updatedAt,
-          }),
-          vin: result.vin,
-          year: result.year,
-          imageUrl: result.imageUrl,
-        });
-
-        return entity;
-      });
-  }
-
   update(entity: VehicleEntity): Promise<VehicleEntity> {
-    const result = db.vehicle.update({
-      data: {
-        make: entity.make,
-        model: entity.model,
-        year: entity.year,
-        plate: entity.plate,
-        vin: entity.vin,
-        imageUrl: entity.imageUrl,
-        driverId: entity.driverId,
-      },
-      where: {
-        id: entity.getId(),
-      },
-    });
-
-    return result.then((item) => {
-      return new VehicleEntity({
-        createdAt: new DateValueObject({
-          value: item.createdAt,
-        }),
-        driverId: item.driverId,
-        id: item.id,
-        isDeleted: item.isDeleted,
-        make: item.make,
-        model: item.model,
-        plate: item.plate,
-        updatedAt: new DateValueObject({
-          value: item.updatedAt,
-        }),
-        vin: item.vin,
-        year: item.year,
-        imageUrl: item.imageUrl,
-      });
-    });
+    console.log(entity);
+    throw new Error('Method not implemented.');
   }
 }

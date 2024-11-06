@@ -15,11 +15,10 @@ export interface BaseEntityPrimitiveProps<ID> {
 }
 
 export abstract class BaseEntity<ID, BASEPROPS, PRIMITIVEPROPS> {
-  protected readonly id: ID;
-  protected readonly createdAt: DateValueObject;
-  protected readonly updatedAt: DateValueObject;
-  protected isDeleted: boolean;
-  abstract serialize(): PRIMITIVEPROPS;
+  public readonly id: ID;
+  public readonly createdAt: DateValueObject;
+  public readonly updatedAt: DateValueObject;
+  public isDeleted: boolean;
 
   constructor(props: BaseEntityProps<ID>) {
     this.id = props.id;
@@ -46,5 +45,14 @@ export abstract class BaseEntity<ID, BASEPROPS, PRIMITIVEPROPS> {
 
   public markAsDeleted(): void {
     this.isDeleted = true;
+  }
+
+  serialize(): BaseEntityPrimitiveProps<ID> {
+    return {
+      id: this.id,
+      createdAt: this.createdAt.value.toISOString(),
+      updatedAt: this.updatedAt.value.toISOString(),
+      isDeleted: this.isDeleted,
+    };
   }
 }

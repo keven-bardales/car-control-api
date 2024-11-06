@@ -32,7 +32,7 @@ export const errorHandlingMiddleware = (error: Error, req: Request, res: Respons
 
   if (error instanceof PrismaClientKnownRequestError) {
     return res.status(500).json(
-      ApiResponse.badRequest({
+      ApiResponse.internalServerError({
         message: 'Ha ocurrido un error de base de datos',
         errors: [],
       }),
@@ -42,7 +42,7 @@ export const errorHandlingMiddleware = (error: Error, req: Request, res: Respons
   if (error instanceof PrismaClientUnknownRequestError) {
     return res.status(500).json(
       ApiResponse.badRequest({
-        message: 'Ha ocurrido un error de base de datos',
+        message: 'Ha internalServerError un error de base de datos',
         errors: [],
       }),
     );
@@ -50,7 +50,7 @@ export const errorHandlingMiddleware = (error: Error, req: Request, res: Respons
 
   if (error instanceof PrismaClientRustPanicError) {
     return res.status(500).json(
-      ApiResponse.badRequest({
+      ApiResponse.internalServerError({
         message: 'Ha ocurrido un error de base de datos',
         errors: [],
       }),
@@ -59,7 +59,7 @@ export const errorHandlingMiddleware = (error: Error, req: Request, res: Respons
 
   if (error instanceof PrismaClientInitializationError) {
     return res.status(500).json(
-      ApiResponse.badRequest({
+      ApiResponse.internalServerError({
         message: 'Ha ocurrido un error de base de datos',
         errors: [],
       }),
@@ -68,7 +68,7 @@ export const errorHandlingMiddleware = (error: Error, req: Request, res: Respons
 
   if (error instanceof PrismaClientValidationError) {
     return res.status(500).json(
-      ApiResponse.badRequest({
+      ApiResponse.internalServerError({
         message: 'Ha ocurrido un error de base de datos',
         errors: [],
       }),

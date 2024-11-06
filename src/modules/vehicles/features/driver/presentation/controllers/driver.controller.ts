@@ -3,12 +3,12 @@ import { UseCasesContainersEnum } from '@/modules/shared/application/dependencie
 
 import { BaseController } from '@/modules/shared/presentation/controllers/base.controller';
 import { NextFunction, Request, Response } from 'express';
-import { CreateVehicleUseCase } from '@modules/vehicles/features/vehicle/domain/use-cases/create-vehicle/create-vehicle.use-case';
-import { GetVehicleUseCase } from '@modules/vehicles/features/vehicle/domain/use-cases/get-all-vehicle/get-all-vehicle.use-case';
+import { GetAllDriversUseCase } from '@modules/vehicles/features/driver/domain/use-cases/get-all-drivers/get-all-drivers.use-case';
+import { CreateDriverUseCase } from '@modules/vehicles/features/driver/domain/use-cases/create-driver/create-driver.use-case';
 
-export class VehicleController extends BaseController {
+export class DriverController extends BaseController {
   constructor() {
-    super('/vehicle');
+    super('/driver');
   }
 
   protected initializeRoutes(): void {
@@ -20,9 +20,11 @@ export class VehicleController extends BaseController {
   private async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     const paramsData = req.query;
 
-    const getVehicleUseCase = useCasesContainer.resolve<GetVehicleUseCase>(UseCasesContainersEnum.GetVehicleUseCase);
+    const getAllDriverUseCase = useCasesContainer.resolve<GetAllDriversUseCase>(
+      UseCasesContainersEnum.GetAllDriverUseCase,
+    );
 
-    getVehicleUseCase
+    getAllDriverUseCase
       .execute(paramsData)
       .then((response) => {
         res.json(response);
@@ -34,17 +36,17 @@ export class VehicleController extends BaseController {
 
   private async getById(req: Request, res: Response): Promise<void> {
     const id = req.params.id;
-    res.json({ message: `Vehicle with ID: ${id}` });
+    res.json({ message: `Driver with ID: ${id}` });
   }
 
   private async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     const vehicleData = req.body;
 
-    const createVehicleUseCase = useCasesContainer.resolve<CreateVehicleUseCase>(
-      UseCasesContainersEnum.CreateVehicleUseCase,
+    const createDriverUseCase = useCasesContainer.resolve<CreateDriverUseCase>(
+      UseCasesContainersEnum.CreateDriverUseCase,
     );
 
-    createVehicleUseCase
+    createDriverUseCase
       .execute(vehicleData)
       .then((response) => {
         res.json(response);
