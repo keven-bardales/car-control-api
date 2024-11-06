@@ -25,7 +25,7 @@ export const errorHandlingMiddleware = (error: Error, req: Request, res: Respons
     return res.status(error.statusCode).json(
       ApiResponse.badRequest({
         message: error.message,
-        errors: [],
+        errors: error.errors,
       }),
     );
   }

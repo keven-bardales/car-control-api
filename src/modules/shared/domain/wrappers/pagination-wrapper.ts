@@ -1,3 +1,5 @@
+import { BadRequestException } from '../exceptions/global-exceptions';
+
 export interface PaginationWrapperProps<T> {
   pageIndex?: number;
   pageSize?: number;
@@ -18,8 +20,9 @@ export class PaginationWrapper<T> {
   public parameter: string;
   public items: T[] = [];
   public totalItems: number = 0;
+  public validSortFields: string[] = [];
 
-  constructor(props: PaginationWrapperProps<T>) {
+  constructor(props: PaginationWrapperProps<T>, otherProps?: { validSortFields: string[] }) {
     const {
       pageIndex = 1,
       pageSize = 10,
@@ -31,6 +34,16 @@ export class PaginationWrapper<T> {
       totalItems = 0,
     } = props;
 
+    if (otherProps) {
+      this.validSortFields = otherProps.validSortFields;
+    }
+
+    if (this.validSortFields.length > 0 && !this.validSortFields.includes(orderBy)) {
+      throw new BadRequestException({
+        message: `Invalid sort field ${orderBy}`,
+      });
+    }
+
     this.pageIndex = Math.max(pageIndex, 1);
     this.pageSize = Math.max(pageSize, 1);
     this.orderBy = orderBy;
@@ -41,8 +54,13 @@ export class PaginationWrapper<T> {
     this.totalItems = totalItems;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static fromQuery<T>(reqQuery: any): PaginationWrapper<T> {
+  static fromQuery<T>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    reqQuery: any,
+    otherProps: {
+      validSortFields: string[];
+    },
+  ): PaginationWrapper<T> {
     const params: PaginationWrapperProps<T> = {
       pageIndex: Math.max(parseInt(reqQuery.pageIndex as string) || 1, 1),
       pageSize: Math.max(parseInt(reqQuery.pageSize as string) || 10, 1),
@@ -52,7 +70,7 @@ export class PaginationWrapper<T> {
       parameter: (reqQuery.parameter as string) || '',
     };
 
-    return new PaginationWrapper(params);
+    return new PaginationWrapper(params, otherProps);
   }
 
   updateResults(items: T[], totalItems: number) {

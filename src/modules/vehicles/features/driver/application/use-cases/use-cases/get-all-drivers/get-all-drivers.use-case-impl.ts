@@ -12,7 +12,9 @@ export class GetAllDriversUseCaseImpl implements GetAllDriversUseCase {
   constructor(private readonly repository: DriverRepository) {}
 
   async execute(data: GetAllDriverParams): Promise<ApiResponse<PaginationWrapper<DriverEntity>>> {
-    const pagination = PaginationWrapper.fromQuery<DriverEntity>(data);
+    const pagination = PaginationWrapper.fromQuery<DriverEntity>(data, {
+      validSortFields: ['name', 'dni', 'birthdate'],
+    });
 
     const [drivers, totalCount] = await Promise.all([
       this.repository.getAll(pagination.getProps()),

@@ -12,7 +12,9 @@ export class GetVehicleUseCaseImpl implements GetVehicleUseCase {
   constructor(private readonly repository: VehicleRepository) {}
 
   async execute(data: GetVehicleParams): Promise<ApiResponse<PaginationWrapper<VehicleEntity>>> {
-    const pagination = PaginationWrapper.fromQuery<VehicleEntity>(data);
+    const pagination = PaginationWrapper.fromQuery<VehicleEntity>(data, {
+      validSortFields: ['brand', 'model', 'year'],
+    });
 
     const [vehicles, totalCount] = await Promise.all([
       this.repository.getAll(pagination.getProps()),
