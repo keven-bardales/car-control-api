@@ -32,6 +32,12 @@ export class DateValueObject extends BaseValueObject<Date> {
     const minutes = String(this.value.getMinutes()).padStart(2, '0');
     const seconds = String(this.value.getSeconds()).padStart(2, '0');
 
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    const offset = this.value.getTimezoneOffset();
+    const sign = offset > 0 ? '-' : '+';
+    const offsetHours = String(Math.floor(Math.abs(offset) / 60)).padStart(2, '0');
+    const offsetMinutes = String(Math.abs(offset) % 60).padStart(2, '0');
+    const timezone = sign + offsetHours + ':' + offsetMinutes;
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${timezone}`;
   }
 }
