@@ -64,7 +64,7 @@ export class PaginationWrapper<T> {
     const params: PaginationWrapperProps<T> = {
       pageIndex: Math.max(parseInt(reqQuery.pageIndex as string) || 1, 1),
       pageSize: Math.max(parseInt(reqQuery.pageSize as string) || 10, 1),
-      orderBy: (reqQuery.orderBy as string) || 'createdAt',
+      orderBy: (reqQuery.orderBy as string) || '',
       orderDirection: (reqQuery.orderDirection as 'asc' | 'desc') || 'asc',
       includeAll: reqQuery.includeAll === 'true',
       parameter: (reqQuery.parameter as string) || '',
