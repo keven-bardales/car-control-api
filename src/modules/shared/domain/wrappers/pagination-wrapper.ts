@@ -12,12 +12,12 @@ export interface PaginationWrapperProps<T> {
 }
 
 export class PaginationWrapper<T> {
-  public pageIndex: number;
-  public pageSize: number;
-  public orderBy: string;
-  public orderDirection: 'asc' | 'desc';
-  public includeAll: boolean;
-  public parameter: string;
+  public pageIndex?: number;
+  public pageSize?: number;
+  public orderBy?: string;
+  public orderDirection?: 'asc' | 'desc';
+  public includeAll?: boolean;
+  public parameter?: string;
   public items: T[] = [];
   public totalItems: number = 0;
   public validSortFields: string[] = [];
@@ -26,22 +26,16 @@ export class PaginationWrapper<T> {
     const {
       pageIndex = 1,
       pageSize = 10,
-      orderBy = 'createdAt',
-      orderDirection = 'asc',
+      orderBy,
+      orderDirection,
       includeAll = false,
-      parameter = '',
+      parameter,
       items = [],
       totalItems = 0,
     } = props;
 
     if (otherProps) {
       this.validSortFields = otherProps.validSortFields;
-    }
-
-    if (this.validSortFields.length > 0 && !this.validSortFields.includes(orderBy) && orderBy !== '') {
-      throw new BadRequestException({
-        message: `Invalid sort field ${orderBy}`,
-      });
     }
 
     this.pageIndex = Math.max(pageIndex, 1);
@@ -52,6 +46,16 @@ export class PaginationWrapper<T> {
     this.parameter = parameter;
     this.items = items;
     this.totalItems = totalItems;
+
+    if (!orderBy) {
+      return;
+    }
+
+    if (this.validSortFields.length > 0 && !this.validSortFields.includes(orderBy) && orderBy !== '') {
+      throw new BadRequestException({
+        message: `Invalid sort field ${orderBy}`,
+      });
+    }
   }
 
   static fromQuery<T>(
@@ -64,10 +68,10 @@ export class PaginationWrapper<T> {
     const params: PaginationWrapperProps<T> = {
       pageIndex: Math.max(parseInt(reqQuery.pageIndex as string) || 1, 1),
       pageSize: Math.max(parseInt(reqQuery.pageSize as string) || 10, 1),
-      orderBy: (reqQuery.orderBy as string) || '',
-      orderDirection: (reqQuery.orderDirection as 'asc' | 'desc') || 'asc',
+      orderBy: (reqQuery.orderBy as string) ?? undefined,
+      orderDirection: (reqQuery.orderDirection as 'asc' | 'desc') ?? undefined,
       includeAll: reqQuery.includeAll === 'true',
-      parameter: (reqQuery.parameter as string) || '',
+      parameter: (reqQuery.parameter as string) ?? '',
     };
 
     return new PaginationWrapper(params, otherProps);
