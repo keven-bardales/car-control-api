@@ -43,6 +43,8 @@ model Driver {
   updatedAt              DateTime                 @updatedAt
   vehicleAssignedDrivers VehicleAssignedDrivers[]
   vehicles               Vehicle[]
+  VehicleEntrance        VehicleEntrance[]
+  VehicleExit            VehicleExit[]
 }
 
 model VehicleEntrance {
@@ -56,12 +58,14 @@ model VehicleEntrance {
   toLocation        String
   notes             String?
   mileage           Int
+  driverId          String?
   status            String
   isDeleted         Boolean          @default(false)
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
   vehicleExits      VehicleExit[]
   VehicleMileage    VehicleMileage[]
+  driver            Driver?          @relation(fields: [driverId], references: [id])
 }
 
 model VehicleExit {
@@ -75,11 +79,13 @@ model VehicleExit {
   toLocation      String
   fromLocation    String
   notes           String?
+  driverId        String?
   mileage         Int
   status          String
   isDeleted       Boolean          @default(false)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
+  driver          Driver?          @relation(fields: [driverId], references: [id])
   VehicleMileage  VehicleMileage[]
 }
 

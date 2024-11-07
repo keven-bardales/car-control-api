@@ -11,6 +11,7 @@ interface VehicleExitProps extends BaseEntityProps<number> {
   notes?: string;
   mileage: number;
   status: string;
+  driverId?: string | null;
 }
 
 interface VehicleExitPrimitiveProps extends BaseEntityPrimitiveProps<number> {
@@ -23,6 +24,7 @@ interface VehicleExitPrimitiveProps extends BaseEntityPrimitiveProps<number> {
   notes?: string;
   mileage: number;
   status: string;
+  driverId?: string | null;
 }
 
 export class VehicleExitEntity extends BaseEntity<number, VehicleExitProps, VehicleExitPrimitiveProps> {
@@ -35,6 +37,7 @@ export class VehicleExitEntity extends BaseEntity<number, VehicleExitProps, Vehi
   public notes?: string;
   public mileage: number;
   public status: string;
+  public driverId?: string | null;
 
   constructor(props: VehicleExitProps) {
     super(props);
@@ -47,6 +50,7 @@ export class VehicleExitEntity extends BaseEntity<number, VehicleExitProps, Vehi
     this.notes = props.notes;
     this.mileage = props.mileage;
     this.status = props.status;
+    this.driverId = props.driverId;
   }
 
   serialize(): VehicleExitPrimitiveProps {
@@ -61,6 +65,7 @@ export class VehicleExitEntity extends BaseEntity<number, VehicleExitProps, Vehi
       notes: this.notes ?? undefined,
       mileage: this.mileage,
       status: this.status,
+      driverId: this.driverId ?? null,
     };
   }
 }
