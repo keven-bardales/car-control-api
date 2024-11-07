@@ -7,4 +7,5 @@ export interface BaseRepository<T, ID> {
   update(entity: T): Promise<T | null>;
   count(): Promise<number>;
   delete(id: ID): Promise<boolean>;
+  exists(id: ID): Promise<boolean>;
 }

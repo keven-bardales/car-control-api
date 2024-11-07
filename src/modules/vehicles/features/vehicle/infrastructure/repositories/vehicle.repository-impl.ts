@@ -11,6 +11,16 @@ export class VehicleRepositoryImpl implements VehicleRepository {
     return db.driver.count();
   }
 
+  exists(id: number): Promise<boolean> {
+    return db.vehicle
+      .findUnique({
+        where: {
+          id,
+        },
+      })
+      .then((result) => !!result);
+  }
+
   async create(item: VehicleEntity): Promise<VehicleEntity | null> {
     const result = await db.vehicle.create({
       data: {
@@ -151,8 +161,34 @@ export class VehicleRepositoryImpl implements VehicleRepository {
     return true;
   }
 
-  update(entity: VehicleEntity): Promise<VehicleEntity> {
-    console.log(entity);
-    throw new Error('Method not implemented.');
+  async update(entity: VehicleEntity): Promise<VehicleEntity> {
+    const updateVehicleResult = await db.vehicle.update({
+      data: {
+        make: entity.make,
+        model: entity.model,
+        year: entity.year,
+        plate: entity.plate,
+        vin: entity.vin,
+        imageUrl: entity.imageUrl,
+        driverId: entity.driverId,
+      },
+      where: {
+        id: entity.id,
+      },
+    });
+
+    return new VehicleEntity({
+      createdAt: new DateValueObject({ value: updateVehicleResult.createdAt }),
+      driverId: updateVehicleResult.driverId,
+      id: updateVehicleResult.id,
+      isDeleted: updateVehicleResult.isDeleted,
+      make: updateVehicleResult.make,
+      model: updateVehicleResult.model,
+      plate: updateVehicleResult.plate,
+      updatedAt: new DateValueObject({ value: updateVehicleResult.updatedAt }),
+      vin: updateVehicleResult.vin,
+      year: updateVehicleResult.year,
+      imageUrl: updateVehicleResult.imageUrl,
+    });
   }
 }

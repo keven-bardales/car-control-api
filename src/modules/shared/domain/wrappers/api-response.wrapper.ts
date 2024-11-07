@@ -88,4 +88,8 @@ export class ApiResponse<T> {
   }): ApiResponse<T> {
     return new ApiResponse<T>({ message, statusCode: 500, errors });
   }
+
+  static notSuccess<T = null>({}: { message?: string; errors?: ApiErrorDetail[] }): ApiResponse<T> {
+    return new ApiResponse<T>({ statusCode: 409 });
+  }
 }

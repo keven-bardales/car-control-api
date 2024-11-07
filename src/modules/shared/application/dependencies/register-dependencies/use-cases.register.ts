@@ -10,6 +10,10 @@ import { GetAllDriversUseCase } from '@/modules/vehicles/features/driver/domain/
 import { GetAllDriversUseCaseImpl } from '@/modules/vehicles/features/driver/application/use-cases/use-cases/get-all-drivers/get-all-drivers.use-case-impl';
 import { CreateDriverUseCase } from '@/modules/vehicles/features/driver/domain/use-cases/create-driver/create-driver.use-case';
 import { CreateDriverUseCaseImpl } from '@/modules/vehicles/features/driver/application/use-cases/use-cases/create-driver/create-driver.use-case-impl';
+import { UpdateVehicleUseCase } from '@/modules/vehicles/features/vehicle/domain/use-cases/update-vehicle/update-vehicle.use-case';
+import { UpdateVehicleUseCaseImpl } from '@/modules/vehicles/features/vehicle/application/use-cases/update-vehicle/update-vehicle.use-case-impl';
+import { DeleteVehicleUseCase } from '@/modules/vehicles/features/vehicle/domain/use-cases/delete-vehicle/delete-vehicle-use-case';
+import { DeleteVehicleUseCaseImpl } from '@/modules/vehicles/features/vehicle/application/use-cases/delete-vehicle/delete-vehicle.use-cse.impl';
 
 export const registerUseCases = () => {
   useCasesContainer.register<CreateVehicleUseCase>(
@@ -30,5 +34,15 @@ export const registerUseCases = () => {
   useCasesContainer.register<CreateDriverUseCase>(
     UseCasesContainersEnum.CreateDriverUseCase,
     new CreateDriverUseCaseImpl(repositoryContainer.resolve(RepositoryContainersEnum.DriverRepository)),
+  );
+
+  useCasesContainer.register<UpdateVehicleUseCase>(
+    UseCasesContainersEnum.UpdateVehicleUseCase,
+    new UpdateVehicleUseCaseImpl(repositoryContainer.resolve(RepositoryContainersEnum.VehicleRepository)),
+  );
+
+  useCasesContainer.register<DeleteVehicleUseCase>(
+    UseCasesContainersEnum.DeleteVehicleUseCase,
+    new DeleteVehicleUseCaseImpl(repositoryContainer.resolve(RepositoryContainersEnum.VehicleRepository)),
   );
 };

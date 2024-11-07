@@ -11,6 +11,16 @@ export class DriverRepositoryImpl implements DriverRepository {
     return db.driver.count();
   }
 
+  exists(id: string): Promise<boolean> {
+    return db.driver
+      .findUnique({
+        where: {
+          id,
+        },
+      })
+      .then((result) => !!result);
+  }
+
   async create(item: DriverEntity): Promise<DriverEntity | null> {
     const newDriver = await db.driver.create({
       data: {
