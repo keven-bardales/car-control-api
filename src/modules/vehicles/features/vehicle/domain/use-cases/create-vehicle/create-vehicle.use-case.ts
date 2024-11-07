@@ -10,6 +10,7 @@ export interface CreateVehicleParams {
   vin: string;
   imageUrl: string;
   driverId: string;
+  totalMilage: number;
 }
 
 export interface CreateVehicleUseCase {

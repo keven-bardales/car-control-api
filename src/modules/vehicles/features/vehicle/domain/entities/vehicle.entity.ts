@@ -8,6 +8,7 @@ interface VehicleProps extends BaseEntityProps<number> {
   vin: string;
   imageUrl?: string | null;
   driverId: string | null;
+  totalMilage?: number;
 }
 
 interface VehiclePrimitiveProps extends BaseEntityPrimitiveProps<number> {
@@ -18,6 +19,7 @@ interface VehiclePrimitiveProps extends BaseEntityPrimitiveProps<number> {
   vin: string;
   imageUrl?: string | null;
   driverId: string | null;
+  totalMilage?: number;
 }
 
 export class VehicleEntity extends BaseEntity<number, VehicleProps, VehiclePrimitiveProps> {
@@ -26,6 +28,7 @@ export class VehicleEntity extends BaseEntity<number, VehicleProps, VehiclePrimi
   public year: number;
   public plate: string;
   public vin: string;
+  public totalMilage?: number;
   public imageUrl?: string | null;
   public driverId?: string | null;
 
@@ -58,6 +61,7 @@ export class VehicleEntity extends BaseEntity<number, VehicleProps, VehiclePrimi
       updatedAt: this.updatedAt.getStringValue(),
       imageUrl: this.imageUrl,
       driverId: this.driverId ?? null,
+      totalMilage: this.totalMilage ?? 0,
     };
   }
 }

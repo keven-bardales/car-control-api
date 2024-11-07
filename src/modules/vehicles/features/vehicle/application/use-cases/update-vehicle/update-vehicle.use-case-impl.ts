@@ -27,6 +27,7 @@ export class UpdateVehicleUseCaseImpl implements UpdateVehicleUseCase {
       vin: data?.vin,
       imageUrl: data?.imageUrl || null,
       driverId: data?.driverId,
+      totalMilage: data?.totalMilage || 0,
     });
 
     const updatedVehicle = await this.vehicleRepository.update(vehicleToUpdate);

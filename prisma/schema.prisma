@@ -20,8 +20,9 @@ model Vehicle {
   year                   Int
   plate                  String
   vin                    String
-  vehicelEntrances       VehiceEntrance[]
-  vehicleExits           VehiceExit[]
+  vehicelEntrances       VehicleEntrance[]
+  vehicleExits           VehicleExit[]
+  totalMilage            Int                      @default(0)
   imageUrl               String?
   driverId               String?
   isDeleted              Boolean                  @default(false)
@@ -29,45 +30,7 @@ model Vehicle {
   updatedAt              DateTime                 @updatedAt
   vehicleAssignedDrivers VehicleAssignedDrivers[]
   driver                 Driver?                  @relation(fields: [driverId], references: [id])
-}
-
-model VehiceEntrance {
-  id           Int      @id @default(autoincrement())
-  vehicle      Vehicle  @relation(fields: [vehicleId], references: [id])
-  vehicleId    Int
-  entranceDate DateTime
-  fromLocation String
-  toLocation   String
-  notes        String?
-  isDeleted    Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model VehiceExit {
-  id           Int      @id @default(autoincrement())
-  vehicle      Vehicle  @relation(fields: [vehicleId], references: [id])
-  vehicleId    Int
-  exitDate     DateTime
-  toLocation   String
-  fromLocation String
-  notes        String?
-  isDeleted    Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}
-
-model VehicleAssignedDrivers {
-  id             Int       @id @default(autoincrement())
-  vehicle        Vehicle   @relation(fields: [vehicleId], references: [id])
-  vehicleId      Int
-  driver         Driver    @relation(fields: [driverId], references: [id])
-  driverId       String
-  dateAssigned   DateTime
-  dateUnassigned DateTime?
-  isDeleted      Boolean   @default(false)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  vehicleMileages        VehicleMileage[]
 }
 
 model Driver {
@@ -80,4 +43,69 @@ model Driver {
   updatedAt              DateTime                 @updatedAt
   vehicleAssignedDrivers VehicleAssignedDrivers[]
   vehicles               Vehicle[]
+}
+
+model VehicleEntrance {
+  id                Int              @id @default(autoincrement())
+  vehicle           Vehicle          @relation(fields: [vehicleId], references: [id])
+  vehicleId         Int
+  entranceDate      DateTime?
+  plannedReturnDate DateTime?
+  actualReturnDate  DateTime?
+  fromLocation      String
+  toLocation        String
+  notes             String?
+  mileage           Int
+  status            String
+  isDeleted         Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  vehicleExits      VehicleExit[]
+  VehicleMileage    VehicleMileage[]
+}
+
+model VehicleExit {
+  id              Int              @id @default(autoincrement())
+  vehicle         Vehicle          @relation(fields: [vehicleId], references: [id])
+  vehicleId       Int
+  entrance        VehicleEntrance? @relation(fields: [entranceId], references: [id])
+  entranceId      Int?
+  plannedExitDate DateTime?
+  actualExitDate  DateTime?
+  toLocation      String
+  fromLocation    String
+  notes           String?
+  mileage         Int
+  status          String
+  isDeleted       Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  VehicleMileage  VehicleMileage[]
+}
+
+model VehicleMileage {
+  id           Int              @id @default(autoincrement())
+  vehicle      Vehicle          @relation(fields: [vehicleId], references: [id])
+  vehicleId    Int
+  dateRecorded DateTime         @default(now())
+  mileage      Int
+  notes        String?
+  entrance     VehicleEntrance? @relation(fields: [entranceId], references: [id])
+  entranceId   Int?
+  exit         VehicleExit?     @relation(fields: [exitId], references: [id])
+  exitId       Int?
+}
+
+model VehicleAssignedDrivers {
+  id             Int       @id @default(autoincrement())
+  vehicle        Vehicle   @relation(fields: [vehicleId], references: [id])
+  vehicleId      Int
+  driver         Driver    @relation(fields: [driverId], references: [id])
+  driverId       String
+  dateAssigned   DateTime
+  dateUnassigned DateTime?
+  status         String
+  isDeleted      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }

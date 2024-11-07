@@ -31,6 +31,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
         vin: item.vin,
         imageUrl: item.imageUrl,
         driverId: item.driverId,
+        totalMilage: item.totalMilage,
       },
     });
 
@@ -54,6 +55,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
       vin: result.vin,
       year: result.year,
       imageUrl: result.imageUrl,
+      totalMilage: result.totalMilage,
     });
 
     return entity;
@@ -86,6 +88,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
       vin: result.vin,
       year: result.year,
       imageUrl: result.imageUrl,
+      totalMilage: result.totalMilage,
     });
 
     return entity;
@@ -140,6 +143,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
           vin: item.vin,
           year: item.year,
           imageUrl: item.imageUrl,
+          totalMilage: item.totalMilage,
         }),
     );
   }
@@ -189,6 +193,7 @@ export class VehicleRepositoryImpl implements VehicleRepository {
       vin: updateVehicleResult.vin,
       year: updateVehicleResult.year,
       imageUrl: updateVehicleResult.imageUrl,
+      totalMilage: updateVehicleResult.totalMilage,
     });
   }
 }

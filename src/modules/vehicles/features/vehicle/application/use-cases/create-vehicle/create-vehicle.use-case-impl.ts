@@ -28,6 +28,7 @@ export class CreateVehicleUseCaseImpl implements CreateVehicleUseCase {
       vin: data?.vin,
       imageUrl: data?.imageUrl || null,
       driverId: data?.driverId,
+      totalMilage: data?.totalMilage || 0,
     });
 
     const createdVehicle = await this.vehicleRepository.create(vehicleEntity);

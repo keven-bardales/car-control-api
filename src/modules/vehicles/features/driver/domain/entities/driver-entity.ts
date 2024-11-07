@@ -30,7 +30,7 @@ export class DriverEntity extends BaseEntity<string, DriverProps, DriverPrimitiv
       ...super.serialize(),
       name: this.name,
       dni: this.dni,
-      birthdate: this.birthdate.value.toISOString(),
+      birthdate: this.birthdate.getStringValue(),
     };
   }
 }
