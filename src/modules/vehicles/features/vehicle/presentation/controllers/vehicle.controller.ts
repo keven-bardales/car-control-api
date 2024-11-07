@@ -18,6 +18,7 @@ export class VehicleController extends BaseController {
     this.router.get('/getById/:id', this.handleAsync(this.getById.bind(this)));
     this.router.post('/create', this.handleAsync(this.create.bind(this)));
     this.router.put('/update/:id', this.handleAsync(this.update.bind(this)));
+    this.router.delete('/delete/:id', this.handleAsync(this.delete.bind(this)));
   }
 
   private async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
